@@ -10,6 +10,7 @@
     <PackageReference Include="Autofac" Version="6.5.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="AutoMapper.EF6" Version="2.1.1" />
+    <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -17,6 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Forum.DAL\Forum.DAL.csproj" />
+    <ProjectReference Include="..\Forum.Model\Forum.Model.csproj" />
     <ProjectReference Include="..\Forum.Repository.Common\Forum.Repository.Common.csproj" />
     <ProjectReference Include="..\Forum.Service.Common\Forum.Service.Common.csproj" />
   </ItemGroup>

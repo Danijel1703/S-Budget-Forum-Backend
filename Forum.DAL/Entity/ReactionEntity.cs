@@ -13,9 +13,7 @@ namespace Forum.DAL.Entity
         public Guid TypeId { get; set; }
         public Guid PostId { get; set; }
         public Guid UserId { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateCreated { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateUpdated { get; set; }
         
         //Navigators

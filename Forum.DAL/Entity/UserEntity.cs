@@ -15,9 +15,7 @@ namespace Forum.DAL.Entity
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateCreated { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateUpdated { get; set; }
 
         //Navigators

@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Forum.DAL\Forum.DAL.csproj" />
     <ProjectReference Include="..\Forum.Model.Common\Forum.Model.Common.csproj" />
   </ItemGroup>
 

@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Forum.Repository;
+﻿using Forum.Model.Common;
 
 namespace Forum.Repository.Common
 {
     public interface IUnitOfWork : IDisposable
     {
-        public Task Commit();
+        public Task SaveChangesAsync();
+
+        public void SaveChanges();
+
         public IUserRepository UserRepository { get; set; }
+        public IPostRepository PostRepository { get; set; }
+
     }
 }

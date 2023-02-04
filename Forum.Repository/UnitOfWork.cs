@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Forum.Model.Common;
 using Forum.Repository.Common;
 
 namespace Forum.Repository
@@ -7,21 +8,29 @@ namespace Forum.Repository
     {
         private ForumContext dbContext { get; set; }
         public IUserRepository UserRepository { get; set; }
-        
-        public UnitOfWork(ForumContext context, IUserRepository _userRepository) 
+        public IPostRepository PostRepository { get; set; }
+
+
+        public UnitOfWork(ForumContext context, IMapper mapper)
         {
-            UserRepository = _userRepository;
             dbContext = context;
+            UserRepository = new UserRepository(dbContext, mapper);
+            PostRepository= new PostRepository(dbContext, mapper);
         }
 
-        public async Task Commit()
+        public async Task SaveChangesAsync()
         {
             await dbContext.SaveChangesAsync();
         }
 
+        public void SaveChanges()
+        {
+            dbContext.SaveChanges();
+        }
+
         public void Dispose()
         {
-            dbContext.Dispose();  
+            dbContext.Dispose();
         }
     }
 }

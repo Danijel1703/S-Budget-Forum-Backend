@@ -2,8 +2,6 @@
 using Forum.DAL.Entity;
 using Forum.Model;
 
-
-
 namespace Forum.Repository
 {
     public class AutoMapperProfiles : Profile
@@ -11,6 +9,7 @@ namespace Forum.Repository
         public AutoMapperProfiles()
         {
             CreateMap<UserEntity, UserModel>().ReverseMap();
+            CreateMap<PostEntity, PostModel>().ReverseMap();
         }
     }
 }

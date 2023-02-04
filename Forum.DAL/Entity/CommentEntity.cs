@@ -13,9 +13,7 @@ namespace Forum.DAL.Entity
         public string Content { get; set; }
         public int Upvotes { get; set; }
         public int Downvotes { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateCreated { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateUpdated { get; set; }
 
         //Navigators
