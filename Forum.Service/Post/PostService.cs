@@ -2,9 +2,11 @@
 using Forum.Model.Common;
 using Forum.Model.Common.Comment;
 using Forum.Model.Common.Post;
+using Forum.Model.Common.Reaction;
 using Forum.Repository.Common;
 using Forum.Repository.Common.Comment;
 using Forum.Repository.Common.Post;
+using Forum.Repository.Common.Reaction;
 using Forum.Service.Common.Post;
 using Forum.Service.Helpers;
 using System;
@@ -20,14 +22,16 @@ namespace Forum.Service.Post
         private IUnitOfWork unitOfWork { get; set; }
         private IPostRepository PostRepository { get; set; }
         private ICommentRepository CommentRepository { get; set; }
+        private IReactionRepository ReactionRepository { get; set; }
         private IFilterFacade FilterFacade { get; set; }
 
-        public PostService(IUnitOfWork _unitOfWork, IPostRepository postRepository, ICommentRepository commentRepository, IFilterFacade filterFacade)
+        public PostService(IUnitOfWork _unitOfWork, IPostRepository postRepository, ICommentRepository commentRepository, IReactionRepository reactionRepository, IFilterFacade filterFacade)
         {
             unitOfWork = _unitOfWork;
             PostRepository = postRepository;
             FilterFacade = filterFacade;
             CommentRepository = commentRepository;
+            ReactionRepository= reactionRepository;
         }
 
         public async Task CreatePost(IPostModel post)
@@ -88,5 +92,23 @@ namespace Forum.Service.Post
             unitOfWork.SaveChanges();
         }
 
+        public async Task CreateReaction(IReactionModel reaction)
+        {
+            await unitOfWork.ReactionRepository.Create(reaction);
+            unitOfWork.SaveChanges();
+        }
+
+        public async Task DeleteReaction(Guid id)
+        {
+            await unitOfWork.ReactionRepository.Delete(id);
+            unitOfWork.SaveChanges();
+        }
+
+        public async Task<IEnumerable<IReactionModel>> GetReactions(IReactionFilterModel reactionFilter, IPaging paging)
+        {
+            var filter = FilterFacade.BuildReactionFilter(reactionFilter);
+            var reactions = await ReactionRepository.GetEntities(filter, paging);
+            return reactions;
+        }
     }
 }

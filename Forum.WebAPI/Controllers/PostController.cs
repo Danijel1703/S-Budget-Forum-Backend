@@ -7,6 +7,8 @@ using Forum.Model.Post;
 using Forum.Model.Common.Comment;
 using Forum.Model.Common.Post;
 using Forum.Service.Common.Post;
+using Forum.Model.Reaction;
+using Forum.Model.Common.Reaction;
 
 namespace Forum.WebAPI.Controllers
 {
@@ -99,6 +101,31 @@ namespace Forum.WebAPI.Controllers
         public async Task DeleteComment(Guid id)
         {
             await Service.DeleteComment(id);
+        }
+
+        [HttpPost]
+        [Route("/post/reaction/create")]
+        public async Task CreateReaction(ReactionModel reaction)
+        {
+            await Service.CreateReaction(reaction);
+        }
+
+        [HttpGet]
+        [Route("/post/reaction/")]
+        public async Task<IEnumerable<IReactionModel>> GetReactions([FromQuery] ReactionFilterModel filter)
+        {
+            var paging = new Paging();
+            paging.RecordsPerPage = filter.RecordsPerPage;
+            paging.Page = filter.Page;
+            paging.Skip = filter.Page - 1;
+            return await Service.GetReactions(filter, paging);
+        }
+
+        [HttpDelete]
+        [Route("/post/reaction/delete")]
+        public async Task DeleteReaction(Guid id)
+        {
+            await Service.DeleteReaction(id);
         }
     }
 }

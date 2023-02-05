@@ -4,14 +4,18 @@ using Forum;
 using Forum.Model;
 using Forum.Model.Common;
 using Forum.Model.Common.Post;
+using Forum.Model.Common.Reaction;
 using Forum.Model.Common.User;
 using Forum.Model.Post;
+using Forum.Model.Reaction;
 using Forum.Model.User;
 using Forum.Repository;
 using Forum.Repository.Common;
 using Forum.Repository.Common.Post;
+using Forum.Repository.Common.Reaction;
 using Forum.Repository.Common.User;
 using Forum.Repository.Post;
+using Forum.Repository.Reaction;
 using Forum.Repository.User;
 using Forum.Service.Common.Post;
 using Forum.Service.Common.User;
@@ -35,6 +39,8 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
     builder.RegisterType<FilterFacade>().As<IFilterFacade>();
     builder.RegisterType<Paging>().As<IPaging>();
+    builder.RegisterType<ReactionModel>().As<IReactionModel>();
+    builder.RegisterType<ReactionRepository>().As<IReactionRepository>();
     builder.RegisterType<ForumContext>();
 });
 

@@ -1,6 +1,7 @@
 ﻿using Forum.Model.Common;
 using Forum.Model.Common.Comment;
 using Forum.Model.Common.Post;
+using Forum.Model.Common.Reaction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,5 +22,8 @@ namespace Forum.Service.Common.Post
         public Task UpdateComment(ICommentModel comment);
         public Task DeleteComment(Guid id);
         public Task<ICommentModel> GetCommentById(Guid id);
+        public Task<IEnumerable<IReactionModel>> GetReactions(IReactionFilterModel filter, IPaging paging);
+        public Task CreateReaction(IReactionModel comment);
+        public Task DeleteReaction(Guid id);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Forum.Repository.Common.Comment;
 using Forum.Repository.Common.Post;
+using Forum.Repository.Common.Reaction;
 using Forum.Repository.Common.User;
 
 namespace Forum.Repository.Common
@@ -13,5 +14,6 @@ namespace Forum.Repository.Common
         public IUserRepository UserRepository { get; set; }
         public IPostRepository PostRepository { get; set; }
         public ICommentRepository CommentRepository { get; set; }
+        public IReactionRepository ReactionRepository { get; set; }
     }
 }
