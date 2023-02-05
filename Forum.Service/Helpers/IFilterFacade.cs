@@ -13,5 +13,6 @@ namespace Forum.Service.Helpers
     {
         IFilter<UserEntity> BuildUserFilter(IUserFilterModel userFilter);
         IFilter<PostEntity> BuildPostFilter(IPostFilterModel postFilter);
+        IFilter<CommentEntity> BuildCommentFilter(ICommentFilterModel commentFilter);
     }
 }

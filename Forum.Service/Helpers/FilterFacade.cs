@@ -47,16 +47,31 @@ namespace Forum.Service.Helpers
             var expressions = new Expression<Func<PostEntity, bool>>[typeof(IPostFilterModel).GetProperties().Length];
             if(postFilter != null)
             {
-                if(postFilter.Id != null)
-                {
-                    expressions[0] = e => e.Id == postFilter.Id;
-                }
                 if (postFilter.UserId != null)
                 {
-                    expressions[1] = e => e.UserId == postFilter.UserId;
+                    expressions[0] = e => e.UserId == postFilter.UserId;
                 }
             }
             var filter = new Filter<PostEntity>();
+            filter.Expressions = expressions.Where(e => e != null);
+            return filter;
+        }
+
+        public IFilter<CommentEntity> BuildCommentFilter(ICommentFilterModel commentFilter)
+        {
+            var expressions = new Expression<Func<CommentEntity, bool>>[typeof(ICommentFilterModel).GetProperties().Length];
+            if (commentFilter != null)
+            {
+                if (commentFilter.UserId != null)
+                {
+                    expressions[0] = e => e.UserId == commentFilter.UserId;
+                }
+                if(commentFilter.PostId != null)
+                {
+                    expressions[0] = e => e.PostId == commentFilter.PostId;
+                }
+            }
+            var filter = new Filter<CommentEntity>();
             filter.Expressions = expressions.Where(e => e != null);
             return filter;
         }

@@ -14,14 +14,16 @@ namespace Forum.Service
     public class PostService : IPostService
     {
         private IUnitOfWork unitOfWork { get; set; }
-        private IPostRepository Repository { get; set; }
+        private IPostRepository PostRepository { get; set; }
+        private ICommentRepository CommentRepository { get; set; }
         private IFilterFacade FilterFacade { get; set; }
 
-        public PostService(IUnitOfWork _unitOfWork, IPostRepository postRepository, IFilterFacade filterFacade)
+        public PostService(IUnitOfWork _unitOfWork, IPostRepository postRepository,ICommentRepository commentRepository , IFilterFacade filterFacade)
         {
             unitOfWork = _unitOfWork;
-            Repository = postRepository;
+            PostRepository = postRepository;
             FilterFacade = filterFacade;
+            CommentRepository = commentRepository;
         }
 
         public async Task CreatePost(IPostModel post) 
@@ -30,18 +32,56 @@ namespace Forum.Service
             unitOfWork.SaveChanges();
         }
 
-        public async Task<IEnumerable<IPostModel>> GetPosts(IPostFilterModel postFilter)
+        public async Task<IPostModel> GetPostById(Guid id)
+        {
+            return await PostRepository.GetById(id);
+        }
+
+        public async Task<IEnumerable<IPostModel>> GetPosts(IPostFilterModel postFilter, IPaging paging)
         {
             var filter = FilterFacade.BuildPostFilter(postFilter);
-            var posts = await Repository.GetEntities(filter);
+            var posts = await PostRepository.GetEntities(filter, paging);
             return posts;
         }
-        public async Task Update(IPostModel post)
+        public async Task UpdatePost(IPostModel post)
         {
+            await unitOfWork.PostRepository.Update(post);
+            unitOfWork.SaveChanges();
         }
     
-        public async Task Delete(IPostModel post)
+        public async Task DeletePost(Guid id)
         {
+            await unitOfWork.PostRepository.Delete(id);
+            unitOfWork.SaveChanges();
+        }
+
+        public async Task CreateComment(ICommentModel comment)
+        {
+            await unitOfWork.CommentRepository.Create(comment);
+            unitOfWork.SaveChanges();
+        }
+
+        public async Task<ICommentModel> GetCommentById(Guid id)
+        {
+            return await CommentRepository.GetById(id);
+        }
+
+        public async Task<IEnumerable<ICommentModel>> GetComments(ICommentFilterModel commentFilter, IPaging paging)
+        {
+            var filter = FilterFacade.BuildCommentFilter(commentFilter);
+            var posts = await CommentRepository.GetEntities(filter, paging);
+            return posts;
+        }
+        public async Task UpdateComment(ICommentModel comment)
+        {
+            await unitOfWork.CommentRepository.Update(comment);
+            unitOfWork.SaveChanges();
+        }
+
+        public async Task DeleteComment(Guid id)
+        {
+            await unitOfWork.CommentRepository.Delete(id);
+            unitOfWork.SaveChanges();
         }
 
     }

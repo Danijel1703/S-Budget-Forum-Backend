@@ -9,6 +9,7 @@ namespace Forum.Repository
         private ForumContext dbContext { get; set; }
         public IUserRepository UserRepository { get; set; }
         public IPostRepository PostRepository { get; set; }
+        public ICommentRepository CommentRepository { get; set; }
 
 
         public UnitOfWork(ForumContext context, IMapper mapper)
@@ -16,6 +17,7 @@ namespace Forum.Repository
             dbContext = context;
             UserRepository = new UserRepository(dbContext, mapper);
             PostRepository= new PostRepository(dbContext, mapper);
+            CommentRepository= new CommentRepository(dbContext, mapper);
         }
 
         public async Task SaveChangesAsync()

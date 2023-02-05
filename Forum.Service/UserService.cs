@@ -26,7 +26,7 @@ namespace Forum.Service
         public async Task RegisterUser(IUserModel userModel)
         {
             userModel.Password = BCrypt.Net.BCrypt.HashPassword(userModel.Password);
-            userModel.RoleId = new Guid("f61d4973-7193-4e7d-91bd-8e9a6f6813c4"); // Remove later
+            userModel.RoleId = new Guid("f260c091-e2b4-4dff-be08-88685835514a"); // Remove later
             userModel.DateCreated = DateTime.UtcNow;
             userModel.DateUpdated = DateTime.UtcNow;
 
@@ -37,10 +37,11 @@ namespace Forum.Service
         public async Task<bool> LogInUser(ILoginModel userCredentials)
         {
             var userFilter = new UserFilterModel();
+            var paging = new Paging();
             userFilter.Email= userCredentials.Email;
 
             var filter = FilterFacade.BuildUserFilter(userFilter);
-            var users = await Repository.GetEntities(filter);
+            var users = await Repository.GetEntities(filter, paging);
             if(users.Any())
             {
                 var user = users.First();

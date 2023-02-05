@@ -24,6 +24,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
     builder.RegisterType<PostService>().As<IPostService>();
     builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
     builder.RegisterType<FilterFacade>().As<IFilterFacade>();
+    builder.RegisterType<Paging>().As<IPaging>();
     builder.RegisterType<ForumContext>();
 });
 

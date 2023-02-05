@@ -10,6 +10,6 @@ namespace Forum.Repository.Common
 
         public IUserRepository UserRepository { get; set; }
         public IPostRepository PostRepository { get; set; }
-
+        public ICommentRepository CommentRepository { get; set; }
     }
 }

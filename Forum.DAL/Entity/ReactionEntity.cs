@@ -11,7 +11,7 @@ namespace Forum.DAL.Entity
     {
         public Guid Id { get; set; }
         public Guid TypeId { get; set; }
-        public Guid PostId { get; set; }
+
         public Guid UserId { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
@@ -22,5 +22,10 @@ namespace Forum.DAL.Entity
         //Constraints
         [ForeignKey("FK_ReactionTypeId")]
         public Guid ReactionTypeId { get; set; }
+        [ForeignKey("FK_PostId")]
+        public Guid PostId { get; set; }
+        [ForeignKey("FK_CommentId")]
+        public Guid? CommentId { get; set; }
+
     }
 }

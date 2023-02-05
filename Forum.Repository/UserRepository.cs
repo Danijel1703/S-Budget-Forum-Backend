@@ -4,6 +4,7 @@ using Forum.Model;
 using Forum.Model.Common;
 using Forum.Repository.Common;
 using System.Data.Entity;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Forum.Repository
@@ -31,25 +32,30 @@ namespace Forum.Repository
             return default;
         }
 
-        public Task Delete(IUserModel userModel)
+        public Task Delete(Guid id)
         {
             return default;
         }
 
-        public async Task<IEnumerable<IUserModel>> GetEntities(IFilter<UserEntity> filter)
+        public Task<IUserModel> GetById(Guid id)
         {
-            var entites = dbContext.Set<UserEntity>().AsQueryable();
+            return default;
+        }
+
+        public async Task<IEnumerable<IUserModel>> GetEntities(IFilter<UserEntity> filter, IPaging paging)
+        {
+            var query = dbContext.Set<UserEntity>().AsQueryable();
             var expresions = filter.Expressions;
-            if(expresions.Any())
+            if (expresions.Any())
             {
                 foreach (var expression in expresions)
                 {
-                    entites = entites.Where(expression);
+                    query = query.Where(expression);
                 }
             }
-            entites.ToList();
-            var usersList = mapper.Map<IEnumerable<UserModel>>(entites);
+            var entites = query.OrderBy(e => e.DateCreated).Skip(paging.Skip).Take(paging.RecordsPerPage).ToList();
             await Task.FromResult(entites);
+            var usersList = mapper.Map<IEnumerable<UserModel>>(entites);
             return usersList;
         }
     }

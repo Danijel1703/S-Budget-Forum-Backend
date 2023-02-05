@@ -2,11 +2,6 @@
 using Forum.DAL.Entity;
 using Forum.Model;
 using Forum.Model.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Forum.Repository
 {
@@ -28,28 +23,51 @@ namespace Forum.Repository
             await Task.FromResult(postEntity);
         }
 
-        public async Task<IEnumerable<IPostModel>> GetEntities(IFilter<PostEntity> filter)
+        public async Task<IEnumerable<IPostModel>> GetEntities(IFilter<PostEntity> filter, IPaging paging)
         {
-            var entites = dbContext.Set<PostEntity>().AsQueryable();
+            var query = dbContext.Set<PostEntity>().AsQueryable();
             var expresions = filter.Expressions;
-            foreach (var expression in expresions)
+            if (expresions.Any())
             {
-                entites = entites.Where(expression);
+                foreach (var expression in expresions)
+                {
+                    query = query.Where(expression);
+                }
             }
-            entites.ToList();
-            var postsList = mapper.Map<IEnumerable<PostModel>>(entites);
+            var entites = query.OrderBy(e => e.DateCreated).Skip(paging.Skip).Take(paging.RecordsPerPage).ToList();
             await Task.FromResult(entites);
+            var postsList = mapper.Map<IEnumerable<PostModel>>(entites);
             return postsList;
         }
 
-        public Task Update(IPostModel post)
+        public async Task Update(IPostModel post)
         {
-            return default;
+            var existingPost = dbContext.Set<PostEntity>().SingleOrDefault(e => e.Id == post.Id);
+            if (existingPost != null)
+            {
+                existingPost.Title = post.Title;
+                existingPost.Content = post.Content;
+                existingPost.DateUpdated = DateTime.UtcNow;
+            }
+            await Task.FromResult(existingPost);
         }
 
-        public Task Delete(IPostModel post)
+        public async Task Delete(Guid id)
         {
-            return default;
+            var entity = dbContext.Set<PostEntity>().SingleOrDefault(e => e.Id == id);
+            if (entity != null)
+            {
+                dbContext.Set<PostEntity>().Remove(entity);
+            }
+            await Task.FromResult(entity);
+        }
+
+        public async Task<IPostModel> GetById(Guid id)
+        {
+            var entity = dbContext.Set<PostEntity>().SingleOrDefault(e => e.Id == id);
+            await Task.FromResult(entity);
+            var post = mapper.Map<PostModel>(entity);
+            return post;
         }
     }
 }

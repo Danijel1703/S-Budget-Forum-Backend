@@ -20,7 +20,7 @@ namespace Forum.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("/register")]
+        [Route("/user/register")]
         public async void RegisterUser(UserModel resource)
         {
             var user = mapper.Map<UserModel>(resource);
@@ -28,7 +28,7 @@ namespace Forum.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("/login")]
+        [Route("/user/login")]
         public async void LogInUser(LoginModel resource)
         {
             await Service.LogInUser(resource);
