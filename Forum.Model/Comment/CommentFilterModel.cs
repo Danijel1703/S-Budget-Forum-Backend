@@ -1,11 +1,11 @@
-﻿using Forum.Model.Common;
+﻿using Forum.Model.Common.Comment;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Forum.Model
+namespace Forum.Model.Comment
 {
     public class CommentFilterModel : ICommentFilterModel
     {

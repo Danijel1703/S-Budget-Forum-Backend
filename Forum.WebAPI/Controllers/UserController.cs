@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Forum.Model;
-using Forum.Service.Common;
+using Forum.Model.User;
+using Forum.Service.Common.User;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.Serialization;
 

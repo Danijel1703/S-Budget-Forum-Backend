@@ -1,14 +1,12 @@
-﻿using BCrypt.Net;
-using Forum.DAL.Entity;
-using Forum.Model;
-using Forum.Model.Common;
+﻿using Forum.Model;
 using Forum.Repository.Common;
-using Forum.Service.Common;
 using Forum.Service.Helpers;
-using System.Linq.Expressions;
-using System.Security.Cryptography;
+using Forum.Model.User;
+using Forum.Model.Common.User;
+using Forum.Repository.Common.User;
+using Forum.Service.Common.User;
 
-namespace Forum.Service
+namespace Forum.Service.User
 {
     public class UserService : IUserService
     {
@@ -38,11 +36,11 @@ namespace Forum.Service
         {
             var userFilter = new UserFilterModel();
             var paging = new Paging();
-            userFilter.Email= userCredentials.Email;
+            userFilter.Email = userCredentials.Email;
 
             var filter = FilterFacade.BuildUserFilter(userFilter);
             var users = await Repository.GetEntities(filter, paging);
-            if(users.Any())
+            if (users.Any())
             {
                 var user = users.First();
                 var isValid = BCrypt.Net.BCrypt.Verify(userCredentials.Password, user.Password);

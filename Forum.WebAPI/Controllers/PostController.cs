@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Forum.Model;
-using Forum.Model.Common;
-using Forum.Service.Common;
 using Microsoft.AspNetCore.Mvc;
 using Forum.Service.Helpers;
+using Forum.Model.Comment;
+using Forum.Model.Post;
+using Forum.Model.Common.Comment;
+using Forum.Model.Common.Post;
+using Forum.Service.Common.Post;
 
 namespace Forum.WebAPI.Controllers
 {

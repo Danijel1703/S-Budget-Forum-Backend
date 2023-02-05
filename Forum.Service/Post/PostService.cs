@@ -1,7 +1,11 @@
 ﻿using Forum.DAL.Entity;
 using Forum.Model.Common;
+using Forum.Model.Common.Comment;
+using Forum.Model.Common.Post;
 using Forum.Repository.Common;
-using Forum.Service.Common;
+using Forum.Repository.Common.Comment;
+using Forum.Repository.Common.Post;
+using Forum.Service.Common.Post;
 using Forum.Service.Helpers;
 using System;
 using System.Collections.Generic;
@@ -9,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Forum.Service
+namespace Forum.Service.Post
 {
     public class PostService : IPostService
     {
@@ -18,7 +22,7 @@ namespace Forum.Service
         private ICommentRepository CommentRepository { get; set; }
         private IFilterFacade FilterFacade { get; set; }
 
-        public PostService(IUnitOfWork _unitOfWork, IPostRepository postRepository,ICommentRepository commentRepository , IFilterFacade filterFacade)
+        public PostService(IUnitOfWork _unitOfWork, IPostRepository postRepository, ICommentRepository commentRepository, IFilterFacade filterFacade)
         {
             unitOfWork = _unitOfWork;
             PostRepository = postRepository;
@@ -26,7 +30,7 @@ namespace Forum.Service
             CommentRepository = commentRepository;
         }
 
-        public async Task CreatePost(IPostModel post) 
+        public async Task CreatePost(IPostModel post)
         {
             await unitOfWork.PostRepository.Create(post);
             unitOfWork.SaveChanges();
@@ -48,7 +52,7 @@ namespace Forum.Service
             await unitOfWork.PostRepository.Update(post);
             unitOfWork.SaveChanges();
         }
-    
+
         public async Task DeletePost(Guid id)
         {
             await unitOfWork.PostRepository.Delete(id);

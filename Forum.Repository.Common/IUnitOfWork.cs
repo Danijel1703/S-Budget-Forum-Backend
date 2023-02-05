@@ -1,4 +1,6 @@
-﻿using Forum.Model.Common;
+﻿using Forum.Repository.Common.Comment;
+using Forum.Repository.Common.Post;
+using Forum.Repository.Common.User;
 
 namespace Forum.Repository.Common
 {

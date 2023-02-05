@@ -1,6 +1,6 @@
-﻿using Forum.Model.Common;
+﻿using Forum.Model.Common.User;
 
-namespace Forum.Model
+namespace Forum.Model.User
 {
     public class UserModel : IUserModel
     {

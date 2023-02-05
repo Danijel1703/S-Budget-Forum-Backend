@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Forum.DAL.Entity;
-using Forum.Model;
+using Forum.Model.Post;
+using Forum.Model.User;
 
 namespace Forum.Repository
 {

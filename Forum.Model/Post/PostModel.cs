@@ -1,7 +1,7 @@
 ﻿using Forum.DAL.Entity;
-using Forum.Model.Common;
+using Forum.Model.Common.Post;
 
-namespace Forum.Model
+namespace Forum.Model.Post
 {
     public class PostModel : IPostModel
     {

@@ -1,4 +1,4 @@
-﻿namespace Forum.Model.Common
+﻿namespace Forum.Model.Common.User
 {
     public interface IUserModel
     {

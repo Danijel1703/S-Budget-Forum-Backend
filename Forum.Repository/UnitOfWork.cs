@@ -1,6 +1,11 @@
 ﻿using AutoMapper;
-using Forum.Model.Common;
 using Forum.Repository.Common;
+using Forum.Repository.Common.Comment;
+using Forum.Repository.Common.Post;
+using Forum.Repository.Common.User;
+using Forum.Repository.User;
+using Forum.Repository.Post;
+using Forum.Repository.Comment;
 
 namespace Forum.Repository
 {

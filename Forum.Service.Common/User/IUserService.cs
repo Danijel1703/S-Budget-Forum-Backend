@@ -1,6 +1,6 @@
-﻿using Forum.Model.Common;
+﻿using Forum.Model.Common.User;
 
-namespace Forum.Service.Common
+namespace Forum.Service.Common.User
 {
     public interface IUserService
     {

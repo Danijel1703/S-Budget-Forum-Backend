@@ -1,5 +1,8 @@
 ﻿using Forum.DAL.Entity;
 using Forum.Model.Common;
+using Forum.Model.Common.Comment;
+using Forum.Model.Common.Post;
+using Forum.Model.Common.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;

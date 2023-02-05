@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using Forum.DAL.Entity;
-using Forum.Model;
 using Forum.Model.Common;
-using Forum.Repository.Common;
+using Forum.Model.Common.User;
+using Forum.Model.User;
+using Forum.Repository.Common.User;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Forum.Repository
+namespace Forum.Repository.User
 {
     public class UserRepository : IUserRepository
     {

@@ -1,11 +1,13 @@
 ﻿using Forum.Model.Common;
+using Forum.Model.Common.Comment;
+using Forum.Model.Common.Post;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Forum.Service.Common
+namespace Forum.Service.Common.Post
 {
     public interface IPostService
     {

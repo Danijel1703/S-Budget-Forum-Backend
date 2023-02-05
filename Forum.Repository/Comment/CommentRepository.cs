@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Forum.DAL.Entity;
-using Forum.Model;
+using Forum.Model.Comment;
 using Forum.Model.Common;
+using Forum.Model.Common.Comment;
+using Forum.Repository.Common.Comment;
 
-namespace Forum.Repository
+namespace Forum.Repository.Comment
 {
     public class CommentRepository : ICommentRepository
     {

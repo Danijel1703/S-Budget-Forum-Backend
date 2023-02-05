@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Forum.DAL.Entity;
-using Forum.Model;
 using Forum.Model.Common;
+using Forum.Model.Common.Post;
+using Forum.Model.Post;
+using Forum.Repository.Common.Post;
 
-namespace Forum.Repository
+namespace Forum.Repository.Post
 {
     public class PostRepository : IPostRepository
     {
