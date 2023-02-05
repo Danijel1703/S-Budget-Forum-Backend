@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Forum.DAL.Entity;
+using Forum.Model.Comment;
 using Forum.Model.Post;
 using Forum.Model.User;
 
@@ -11,6 +12,8 @@ namespace Forum.Repository
         {
             CreateMap<UserEntity, UserModel>().ReverseMap();
             CreateMap<PostEntity, PostModel>().ReverseMap();
+            CreateMap<ReactionEntity, PostModel>().ReverseMap();
+            CreateMap<CommentEntity, CommentModel>().ReverseMap();
         }
     }
 }

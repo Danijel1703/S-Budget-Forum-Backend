@@ -40,7 +40,7 @@ namespace Forum.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("/post/")]
+        [Route("/post")]
         public async Task<IEnumerable<IPostModel>> GetPosts([FromQuery] PostFilterModel filter)
         {
             var paging = new Paging();

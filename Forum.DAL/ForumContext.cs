@@ -6,7 +6,7 @@ namespace Forum
 {
     public class ForumContext : DbContext
     {
-        public DbSet<UserEntity> Users { get; set; }
+        public DbSet<UserEntity> User { get; set; }
         public DbSet<RoleEntity> Role { get; set; }
         public DbSet<PostEntity> Post { get; set; }
         public DbSet<CommentEntity> Comment { get; set; }
