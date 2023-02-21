@@ -1,11 +1,4 @@
-﻿using Forum.DAL.Entity;
-using Forum.Model.Common.Reaction;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Forum.Model.Common.Reaction;
 
 namespace Forum.Model.Reaction
 {

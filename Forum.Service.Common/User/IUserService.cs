@@ -6,6 +6,6 @@ namespace Forum.Service.Common.User
     {
         public Task RegisterUser(IUserModel user);
 
-        public Task<bool> LogInUser(ILoginModel loginModel);
+        public Task<string> LogInUser(ILoginModel loginModel);
     }
 }

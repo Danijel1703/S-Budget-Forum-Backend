@@ -2,7 +2,7 @@
 using Forum.Model.User;
 using Forum.Service.Common.User;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.Serialization;
+using System.Net;
 
 namespace Forum.WebAPI.Controllers
 {
@@ -21,17 +21,33 @@ namespace Forum.WebAPI.Controllers
 
         [HttpPost]
         [Route("/user/register")]
-        public async void RegisterUser(UserModel resource)
+        public async Task<HttpResponseMessage> RegisterUser(UserModel resource)
         {
-            var user = mapper.Map<UserModel>(resource);
-            await Service.RegisterUser(user);
+            try
+            {
+                var user = mapper.Map<UserModel>(resource);
+                await Service.RegisterUser(user);
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
         }
 
         [HttpPost]
         [Route("/user/login")]
-        public async void LogInUser(LoginModel resource)
+        public async Task<string> LogInUser(LoginModel resource)
         {
-            await Service.LogInUser(resource);
+            try
+            {
+                var token = await Service.LogInUser(resource);
+                return token;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
         }
     }
 }

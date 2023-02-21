@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Forum.DAL.Entity
 {
@@ -19,8 +14,9 @@ namespace Forum.DAL.Entity
 
         //Navigators
         public UserEntity User { get; set; }
+
         public List<CommentEntity> Comment { get; set; }
-        
+
         //Constraints
         [ForeignKey("FK_UserId")]
         public Guid UserId { get; set; }

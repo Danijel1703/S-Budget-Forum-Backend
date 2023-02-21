@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using Forum.DAL.Entity;
-using Forum.Model.Comment;
 using Forum.Model.Common;
-using Forum.Model.Common.Comment;
 using Forum.Model.Common.Reaction;
 using Forum.Model.Reaction;
 using Forum.Repository.Common.Reaction;
-
 
 namespace Forum.Repository.Reaction
 {
@@ -38,9 +35,9 @@ namespace Forum.Repository.Reaction
         public async Task<IEnumerable<IReactionModel>> GetEntities(IFilter<ReactionEntity> filterModel, IPaging paging)
         {
             var query = dbContext.Set<ReactionEntity>().AsQueryable();
-            if(filterModel.Expressions.Any())
+            if (filterModel.Expressions.Any())
             {
-                foreach(var expression in filterModel.Expressions)
+                foreach (var expression in filterModel.Expressions)
                 {
                     query = query.Where(expression);
                 }
@@ -55,7 +52,7 @@ namespace Forum.Repository.Reaction
         {
             await Task.FromResult(1);
         }
-    
+
         public async Task<IReactionModel> GetById(Guid id)
         {
             await Task.FromResult(1);

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Forum.DAL.Entity
 {
@@ -20,6 +15,7 @@ namespace Forum.DAL.Entity
 
         //Navigators
         public RoleEntity Role { get; set; }
+
         public List<PostEntity> Post { get; set; }
         public List<CommentEntity> Comment { get; set; }
 

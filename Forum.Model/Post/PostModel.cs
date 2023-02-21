@@ -1,5 +1,4 @@
-﻿using Forum.DAL.Entity;
-using Forum.Model.Common.Post;
+﻿using Forum.Model.Common.Post;
 
 namespace Forum.Model.Post
 {

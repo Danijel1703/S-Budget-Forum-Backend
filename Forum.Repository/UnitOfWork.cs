@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
+using Forum.Repository.Comment;
 using Forum.Repository.Common;
 using Forum.Repository.Common.Comment;
 using Forum.Repository.Common.Post;
-using Forum.Repository.Common.User;
-using Forum.Repository.User;
-using Forum.Repository.Post;
-using Forum.Repository.Comment;
-using Forum.Repository.Reaction;
 using Forum.Repository.Common.Reaction;
+using Forum.Repository.Common.User;
+using Forum.Repository.Post;
+using Forum.Repository.Reaction;
+using Forum.Repository.User;
 
 namespace Forum.Repository
 {
@@ -19,13 +19,12 @@ namespace Forum.Repository
         public ICommentRepository CommentRepository { get; set; }
         public IReactionRepository ReactionRepository { get; set; }
 
-
         public UnitOfWork(ForumContext context, IMapper mapper)
         {
             dbContext = context;
             UserRepository = new UserRepository(dbContext, mapper);
-            PostRepository= new PostRepository(dbContext, mapper);
-            CommentRepository= new CommentRepository(dbContext, mapper);
+            PostRepository = new PostRepository(dbContext, mapper);
+            CommentRepository = new CommentRepository(dbContext, mapper);
             ReactionRepository = new ReactionRepository(dbContext, mapper);
         }
 

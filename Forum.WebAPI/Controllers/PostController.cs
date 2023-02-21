@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
 using Forum.Model;
-using Microsoft.AspNetCore.Mvc;
-using Forum.Service.Helpers;
 using Forum.Model.Comment;
-using Forum.Model.Post;
 using Forum.Model.Common.Comment;
 using Forum.Model.Common.Post;
-using Forum.Service.Common.Post;
-using Forum.Model.Reaction;
 using Forum.Model.Common.Reaction;
+using Forum.Model.Post;
+using Forum.Model.Reaction;
+using Forum.Service.Common.Post;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Forum.WebAPI.Controllers
 {
@@ -79,7 +78,7 @@ namespace Forum.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("/post/comment/")]
+        [Route("/post/comment")]
         public async Task<IEnumerable<ICommentModel>> GetComments([FromQuery] CommentFilterModel filter)
         {
             var paging = new Paging();
@@ -111,7 +110,7 @@ namespace Forum.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("/post/reaction/")]
+        [Route("/post/reaction")]
         public async Task<IEnumerable<IReactionModel>> GetReactions([FromQuery] ReactionFilterModel filter)
         {
             var paging = new Paging();

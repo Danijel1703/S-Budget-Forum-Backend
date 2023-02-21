@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Forum.DAL.Entity
 {
@@ -18,11 +13,13 @@ namespace Forum.DAL.Entity
 
         //Navigators
         public PostEntity Post { get; set; }
+
         public UserEntity User { get; set; }
 
         //Constraints
         [ForeignKey("FK_UserId")]
         public Guid UserId { get; set; }
+
         [ForeignKey("FK_PostId")]
         public Guid PostId { get; set; }
     }

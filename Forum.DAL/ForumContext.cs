@@ -1,6 +1,5 @@
 ﻿using Forum.DAL.Entity;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata;
 
 namespace Forum
 {
@@ -12,6 +11,7 @@ namespace Forum
         public DbSet<CommentEntity> Comment { get; set; }
         public DbSet<ReactionEntity> Reaction { get; set; }
         public DbSet<ReactionTypeEntity> ReactionType { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql("Host=localhost;Database=Forum;Username=postgres;Password=1234");
@@ -61,7 +61,17 @@ namespace Forum
                 modelBuilder.Entity<UserEntity>().HasData(user);
                 for (int j = 0; j < 100; j++)
                 {
-                    modelBuilder.Entity<PostEntity>().HasData(new PostEntity { Id = Guid.NewGuid(), Content = $"Contet {j}", Title = $"Title {j}", Upvotes = 50, Downvotes = 85, UserId = userId, DateCreated = DateTime.Now, DateUpdated = DateTime.Now });
+                    modelBuilder.Entity<PostEntity>().HasData(new PostEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        Content = $"Contet {j}",
+                        Title = $"Title {j}",
+                        Upvotes = 50,
+                        Downvotes = 85,
+                        UserId = userId,
+                        DateCreated = DateTime.Now,
+                        DateUpdated = DateTime.Now
+                    });
                 }
             }
         }

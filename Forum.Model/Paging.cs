@@ -18,7 +18,7 @@ namespace Forum.Model
                 if (Page > 1)
                 {
                     _skip = RecordsPerPage * (Page - 1);
-                }   
+                }
             }
         }
     }

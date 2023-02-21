@@ -1,5 +1,4 @@
-﻿using Forum.DAL.Entity;
-using Forum.Model.Common;
+﻿using Forum.Model.Common;
 using Forum.Model.Common.Comment;
 using Forum.Model.Common.Post;
 using Forum.Model.Common.Reaction;
@@ -9,11 +8,6 @@ using Forum.Repository.Common.Post;
 using Forum.Repository.Common.Reaction;
 using Forum.Service.Common.Post;
 using Forum.Service.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Forum.Service.Post
 {
@@ -31,7 +25,7 @@ namespace Forum.Service.Post
             PostRepository = postRepository;
             FilterFacade = filterFacade;
             CommentRepository = commentRepository;
-            ReactionRepository= reactionRepository;
+            ReactionRepository = reactionRepository;
         }
 
         public async Task CreatePost(IPostModel post)
@@ -51,6 +45,7 @@ namespace Forum.Service.Post
             var posts = await PostRepository.GetEntities(filter, paging);
             return posts;
         }
+
         public async Task UpdatePost(IPostModel post)
         {
             await unitOfWork.PostRepository.Update(post);
@@ -80,6 +75,7 @@ namespace Forum.Service.Post
             var posts = await CommentRepository.GetEntities(filter, paging);
             return posts;
         }
+
         public async Task UpdateComment(ICommentModel comment)
         {
             await unitOfWork.CommentRepository.Update(comment);

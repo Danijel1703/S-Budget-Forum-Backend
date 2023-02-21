@@ -1,10 +1,15 @@
 ﻿using Forum.Model;
-using Forum.Repository.Common;
-using Forum.Service.Helpers;
-using Forum.Model.User;
 using Forum.Model.Common.User;
+using Forum.Model.User;
+using Forum.Repository.Common;
 using Forum.Repository.Common.User;
 using Forum.Service.Common.User;
+using Forum.Service.Helpers;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Forum.Service.User
 {
@@ -13,18 +18,19 @@ namespace Forum.Service.User
         private IUnitOfWork unitOfWork { get; set; }
         private IUserRepository Repository { get; set; }
         private IFilterFacade FilterFacade { get; set; }
+        private readonly IConfiguration configuration;
 
-        public UserService(IUnitOfWork _unitOfWork, IUserRepository userRepository, IFilterFacade filterFacade)
+        public UserService(IUnitOfWork _unitOfWork, IUserRepository userRepository, IFilterFacade filterFacade, IConfiguration config)
         {
             unitOfWork = _unitOfWork;
             Repository = userRepository;
             FilterFacade = filterFacade;
+            configuration = config;
         }
 
         public async Task RegisterUser(IUserModel userModel)
         {
             userModel.Password = BCrypt.Net.BCrypt.HashPassword(userModel.Password);
-            userModel.RoleId = new Guid("f260c091-e2b4-4dff-be08-88685835514a"); // Remove later
             userModel.DateCreated = DateTime.UtcNow;
             userModel.DateUpdated = DateTime.UtcNow;
 
@@ -32,7 +38,7 @@ namespace Forum.Service.User
             unitOfWork.SaveChanges();
         }
 
-        public async Task<bool> LogInUser(ILoginModel userCredentials)
+        public async Task<string> LogInUser(ILoginModel userCredentials)
         {
             var userFilter = new UserFilterModel();
             var paging = new Paging();
@@ -44,9 +50,35 @@ namespace Forum.Service.User
             {
                 var user = users.First();
                 var isValid = BCrypt.Net.BCrypt.Verify(userCredentials.Password, user.Password);
-                return isValid;
+                if (isValid)
+                {
+                    return GenerateToken(user);
+                }
+                else
+                {
+                    return "Invalid password.";
+                }
             }
-            return false;
+            return "User does not exist.";
+        }
+
+        private string GenerateToken(IUserModel userModel)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, userModel.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, userModel.RoleId.ToString()),
+            };
+            var token = new JwtSecurityToken(
+                configuration["Jwt:Issuer"],
+                configuration["Jwt:Audience"],
+                claims,
+                expires: DateTime.Now.AddMinutes(15),
+                signingCredentials: credentials
+            );
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
