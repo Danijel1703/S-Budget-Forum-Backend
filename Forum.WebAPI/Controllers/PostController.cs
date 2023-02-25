@@ -7,6 +7,7 @@ using Forum.Model.Common.Reaction;
 using Forum.Model.Post;
 using Forum.Model.Reaction;
 using Forum.Service.Common.Post;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Forum.WebAPI.Controllers
@@ -39,6 +40,7 @@ namespace Forum.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("/post")]
         public async Task<IEnumerable<IPostModel>> GetPosts([FromQuery] PostFilterModel filter)
         {
