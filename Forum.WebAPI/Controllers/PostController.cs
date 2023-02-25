@@ -27,6 +27,7 @@ namespace Forum.WebAPI.Controllers
 
         [HttpPost]
         [Route("/post/create")]
+        [Authorize]
         public async Task CreatePost(PostModel post)
         {
             await Service.CreatePost(post);
@@ -40,7 +41,6 @@ namespace Forum.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("/post")]
         public async Task<IEnumerable<IPostModel>> GetPosts([FromQuery] PostFilterModel filter)
         {
@@ -53,6 +53,7 @@ namespace Forum.WebAPI.Controllers
 
         [HttpPut]
         [Route("/post/update")]
+        [Authorize]
         public async Task UpdatePost(PostModel postModel)
         {
             await Service.UpdatePost(postModel);
@@ -60,6 +61,7 @@ namespace Forum.WebAPI.Controllers
 
         [HttpDelete]
         [Route("/post/delete")]
+        [Authorize]
         public async Task DeletePost(Guid id)
         {
             await Service.DeletePost(id);
@@ -67,6 +69,7 @@ namespace Forum.WebAPI.Controllers
 
         [HttpPost]
         [Route("/post/comment/create")]
+        [Authorize]
         public async Task CreateComment(CommentModel comment)
         {
             await Service.CreateComment(comment);
@@ -92,6 +95,7 @@ namespace Forum.WebAPI.Controllers
 
         [HttpPut]
         [Route("/post/comment/update")]
+        [Authorize]
         public async Task UpdateComment(CommentModel commentModel)
         {
             await Service.UpdateComment(commentModel);
@@ -99,6 +103,7 @@ namespace Forum.WebAPI.Controllers
 
         [HttpDelete]
         [Route("/post/comment/delete")]
+        [Authorize]
         public async Task DeleteComment(Guid id)
         {
             await Service.DeleteComment(id);
@@ -106,6 +111,7 @@ namespace Forum.WebAPI.Controllers
 
         [HttpPost]
         [Route("/post/reaction/create")]
+        [Authorize]
         public async Task CreateReaction(ReactionModel reaction)
         {
             await Service.CreateReaction(reaction);
@@ -124,6 +130,7 @@ namespace Forum.WebAPI.Controllers
 
         [HttpDelete]
         [Route("/post/reaction/delete")]
+        [Authorize]
         public async Task DeleteReaction(Guid id)
         {
             await Service.DeleteReaction(id);

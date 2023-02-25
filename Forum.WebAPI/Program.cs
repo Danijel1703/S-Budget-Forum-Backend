@@ -94,8 +94,9 @@ app.UseCors(
         .AllowAnyHeader()
 );
 
+app.UseAuthentication();
+app.UseRouting();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
