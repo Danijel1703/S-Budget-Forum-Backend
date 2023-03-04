@@ -2,6 +2,7 @@
 using Forum.DAL.Entity;
 using Forum.Model.Comment;
 using Forum.Model.Post;
+using Forum.Model.RoleModel;
 using Forum.Model.User;
 
 namespace Forum.Repository
@@ -14,6 +15,7 @@ namespace Forum.Repository
             CreateMap<PostEntity, PostModel>().ReverseMap();
             CreateMap<ReactionEntity, PostModel>().ReverseMap();
             CreateMap<CommentEntity, CommentModel>().ReverseMap();
+            CreateMap<RoleEntity, RoleModel>().ReverseMap();
         }
     }
 }

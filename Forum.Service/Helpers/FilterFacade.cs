@@ -68,7 +68,7 @@ namespace Forum.Service.Helpers
                 }
                 if (commentFilter.PostId != null)
                 {
-                    expressions[0] = e => e.PostId == commentFilter.PostId;
+                    expressions[1] = e => e.PostId == commentFilter.PostId;
                 }
             }
             var filter = new Filter<CommentEntity>();
@@ -87,7 +87,7 @@ namespace Forum.Service.Helpers
                 }
                 if (reactionFilter.PostId != null)
                 {
-                    expressions[0] = e => e.PostId == reactionFilter.PostId;
+                    expressions[1] = e => e.PostId == reactionFilter.PostId;
                 }
             }
             var filter = new Filter<ReactionEntity>();

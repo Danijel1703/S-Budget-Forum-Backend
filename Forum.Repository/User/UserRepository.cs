@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Forum.DAL.Entity;
+using Forum.Model;
 using Forum.Model.Common;
 using Forum.Model.Common.User;
 using Forum.Model.User;
@@ -41,13 +42,12 @@ namespace Forum.Repository.User
             return default;
         }
 
-        public async Task<IEnumerable<IUserModel>> GetEntities(IFilter<UserEntity> filter, IPaging paging)
+        public async Task<IEnumerable<IUserModel>> GetEntities(IFilter<UserEntity>? filter, IPaging paging)
         {
             var query = dbContext.Set<UserEntity>().AsQueryable();
-            var expresions = filter.Expressions;
-            if (expresions.Any())
+            if (filter != null && filter.Expressions.Any())
             {
-                foreach (var expression in expresions)
+                foreach (var expression in filter.Expressions)
                 {
                     query = query.Where(expression);
                 }
@@ -56,6 +56,24 @@ namespace Forum.Repository.User
             await Task.FromResult(entites);
             var usersList = mapper.Map<IEnumerable<UserModel>>(entites);
             return usersList;
+        }
+
+        public async Task<IPagedResult<IUserModel>> GetUsersPaged(IFilter<UserEntity>? filter, IPaging paging)
+        {
+            var entities = await GetEntities(filter, paging);
+            var totalRecords = dbContext.Set<UserEntity>().Count();
+            IPagedResult<IUserModel> pagedResult = ToPagedList<IUserModel>(entities, paging, totalRecords);
+            return pagedResult;
+        }
+
+        private IPagedResult<TEntityModel> ToPagedList<TEntityModel>(IEnumerable<TEntityModel> entities, IPaging paging, int totalRecords)
+        {
+            IPagedResult<TEntityModel> pagedResult = new PagedResult<TEntityModel>();
+            pagedResult.Item = entities;
+            pagedResult.Page = paging.Page;
+            pagedResult.TotalRecords = totalRecords;
+            pagedResult.RecordsPerPage = paging.RecordsPerPage;
+            return pagedResult;
         }
     }
 }

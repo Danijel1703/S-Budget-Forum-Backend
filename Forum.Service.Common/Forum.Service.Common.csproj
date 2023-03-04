@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Forum.Model.Common\Forum.Model.Common.csproj" />
+    <ProjectReference Include="..\Forum.Model\Forum.Model.csproj" />
   </ItemGroup>
 
 </Project>

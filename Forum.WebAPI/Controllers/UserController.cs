@@ -1,6 +1,11 @@
 ﻿using AutoMapper;
+using Forum.Model;
+using Forum.Model.Common;
+using Forum.Model.Common.Role;
+using Forum.Model.Common.User;
 using Forum.Model.User;
 using Forum.Service.Common.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -11,6 +16,7 @@ namespace Forum.WebAPI.Controllers
     public class UserController : ControllerBase
     {
         public IUserService Service { get; set; }
+
         public IMapper mapper { get; set; }
 
         public UserController(IUserService service, IMapper _mapper)
@@ -35,6 +41,21 @@ namespace Forum.WebAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("/user")]
+        public async Task<IPagedResult<IUserModel>> GetUsers([FromQuery] Paging paging)
+        {
+            try
+            {
+                var result = await Service.GetUsersPaged(paging);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+
         [HttpPost]
         [Route("/user/login")]
         public async Task<string> LogInUser(LoginModel resource)
@@ -43,6 +64,21 @@ namespace Forum.WebAPI.Controllers
             {
                 var token = await Service.LogInUser(resource);
                 return token;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("/user/roles")]
+        [Authorize]
+        public async Task<IEnumerable<IRoleModel>> GetAllRoles()
+        {
+            try
+            {
+                return await Service.GetRoles();
             }
             catch (Exception ex)
             {

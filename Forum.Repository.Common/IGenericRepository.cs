@@ -1,4 +1,4 @@
-﻿using Forum.Model.Common;
+using Forum.Model.Common;
 
 namespace Forum.Repository.Common
 {

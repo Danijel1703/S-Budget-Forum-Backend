@@ -35,44 +35,19 @@ namespace Forum
 
             //Initial Data
             modelBuilder.Entity<RoleEntity>().HasData(
-                new RoleEntity { Id = Guid.NewGuid(), DateCreated = DateTime.UtcNow, DateUpdated = DateTime.UtcNow, Name = "admin" },
-                new RoleEntity { Id = Guid.NewGuid(), DateCreated = DateTime.UtcNow, DateUpdated = DateTime.UtcNow, Name = "super-admin" },
-                new RoleEntity { Id = userRoleId, DateCreated = DateTime.UtcNow, DateUpdated = DateTime.UtcNow, Name = "user" }
+                new RoleEntity { Id = Guid.NewGuid(), DateCreated = DateTime.UtcNow, DateUpdated = DateTime.UtcNow, Name = "Admin", Abrv = "admin" },
+                new RoleEntity { Id = Guid.NewGuid(), DateCreated = DateTime.UtcNow, DateUpdated = DateTime.UtcNow, Name = "Super Admin", Abrv = "super-admin" },
+                new RoleEntity { Id = userRoleId, DateCreated = DateTime.UtcNow, DateUpdated = DateTime.UtcNow, Name = "User", Abrv = "user" }
             );
             modelBuilder.Entity<ReactionTypeEntity>().HasData(
-                new ReactionTypeEntity { Id = Guid.NewGuid(), DateCreated = DateTime.UtcNow, DateUpdated = DateTime.UtcNow, Name = "upvote" },
-                new ReactionTypeEntity { Id = Guid.NewGuid(), DateCreated = DateTime.UtcNow, DateUpdated = DateTime.UtcNow, Name = "downvote" }
+                new ReactionTypeEntity { Id = Guid.NewGuid(), DateCreated = DateTime.UtcNow, DateUpdated = DateTime.UtcNow, Name = "Upvote", Abrv = "upvote" },
+                new ReactionTypeEntity { Id = Guid.NewGuid(), DateCreated = DateTime.UtcNow, DateUpdated = DateTime.UtcNow, Name = "Downvote", Abrv = "Downvote" }
             );
-
-            // Seed Data
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 30; i++)
             {
-                var user = new UserEntity();
-                var userId = Guid.NewGuid();
-                user.Id = userId;
-                user.RoleId = userRoleId;
-                user.FirstName = $"Danijel {i}";
-                user.LastName = $"Jakovac {i}";
-                user.Password = $"fake pass";
-                user.Email = $"danijel.jakovac{i}@gmail.com";
-                user.Username = $"user-{i}";
-                user.DateCreated = DateTime.UtcNow;
-                user.DateUpdated = DateTime.UtcNow;
-                modelBuilder.Entity<UserEntity>().HasData(user);
-                for (int j = 0; j < 100; j++)
-                {
-                    modelBuilder.Entity<PostEntity>().HasData(new PostEntity
-                    {
-                        Id = Guid.NewGuid(),
-                        Content = $"Contet {j}",
-                        Title = $"Title {j}",
-                        Upvotes = 50,
-                        Downvotes = 85,
-                        UserId = userId,
-                        DateCreated = DateTime.Now,
-                        DateUpdated = DateTime.Now
-                    });
-                }
+                modelBuilder.Entity<UserEntity>().HasData(
+                    new UserEntity { Id = Guid.NewGuid(), DateCreated = DateTime.UtcNow, DateUpdated = DateTime.UtcNow, FirstName = $"Danijel - {i}", LastName = $"Jakovac - {i}", Email = $"danijel.jakovac{i}@gmail.com", Username = $"Danijel{i}", RoleId = userRoleId, Password = $"danijel123" }
+                );
             }
         }
     }

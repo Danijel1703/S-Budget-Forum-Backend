@@ -1,4 +1,5 @@
-﻿using Forum.Model.Common;
+﻿using Forum.Model;
+using Forum.Model.Common;
 using Forum.Model.Common.Comment;
 using Forum.Model.Common.Post;
 using Forum.Model.Common.Reaction;

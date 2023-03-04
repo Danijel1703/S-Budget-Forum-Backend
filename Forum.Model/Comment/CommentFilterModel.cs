@@ -6,7 +6,5 @@ namespace Forum.Model.Comment
     {
         public Guid? PostId { get; set; }
         public Guid? UserId { get; set; }
-        public int RecordsPerPage { get; set; }
-        public int Page { get; set; }
     }
 }

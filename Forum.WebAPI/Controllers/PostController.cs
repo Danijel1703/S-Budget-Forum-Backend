@@ -42,12 +42,8 @@ namespace Forum.WebAPI.Controllers
 
         [HttpGet]
         [Route("/post")]
-        public async Task<IEnumerable<IPostModel>> GetPosts([FromQuery] PostFilterModel filter)
+        public async Task<IEnumerable<IPostModel>> GetPosts([FromQuery] PostFilterModel filter, Paging paging)
         {
-            var paging = new Paging();
-            paging.RecordsPerPage = filter.RecordsPerPage;
-            paging.Page = filter.Page;
-            paging.Skip = filter.Page - 1;
             return await Service.GetPosts(filter, paging);
         }
 
@@ -84,12 +80,8 @@ namespace Forum.WebAPI.Controllers
 
         [HttpGet]
         [Route("/post/comment")]
-        public async Task<IEnumerable<ICommentModel>> GetComments([FromQuery] CommentFilterModel filter)
+        public async Task<IEnumerable<ICommentModel>> GetComments([FromQuery] CommentFilterModel filter, Paging paging)
         {
-            var paging = new Paging();
-            paging.RecordsPerPage = filter.RecordsPerPage;
-            paging.Page = filter.Page;
-            paging.Skip = filter.Page - 1;
             return await Service.GetComments(filter, paging);
         }
 
@@ -119,12 +111,8 @@ namespace Forum.WebAPI.Controllers
 
         [HttpGet]
         [Route("/post/reaction")]
-        public async Task<IEnumerable<IReactionModel>> GetReactions([FromQuery] ReactionFilterModel filter)
+        public async Task<IEnumerable<IReactionModel>> GetReactions([FromQuery] ReactionFilterModel filter, Paging paging)
         {
-            var paging = new Paging();
-            paging.RecordsPerPage = filter.RecordsPerPage;
-            paging.Page = filter.Page;
-            paging.Skip = filter.Page - 1;
             return await Service.GetReactions(filter, paging);
         }
 

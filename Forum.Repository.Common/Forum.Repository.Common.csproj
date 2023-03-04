@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Forum.DAL\Forum.DAL.csproj" />
     <ProjectReference Include="..\Forum.Model.Common\Forum.Model.Common.csproj" />
+    <ProjectReference Include="..\Forum.Model\Forum.Model.csproj" />
   </ItemGroup>
 
 </Project>
