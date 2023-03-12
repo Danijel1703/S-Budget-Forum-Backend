@@ -6,7 +6,7 @@ namespace Forum.Repository.Common
     {
         public Task Create(TResource resource);
 
-        public Task Update(TResource resource);
+        public Task Update(TResource resource, Guid id);
 
         public Task Delete(Guid id);
 

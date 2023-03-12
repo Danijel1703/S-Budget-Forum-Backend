@@ -73,12 +73,56 @@ namespace Forum.WebAPI.Controllers
 
         [HttpGet]
         [Route("/user/roles")]
-        [Authorize]
         public async Task<IEnumerable<IRoleModel>> GetAllRoles()
         {
             try
             {
                 return await Service.GetRoles();
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("/user/{id}")]
+        public async Task<IUserModel> GetUserById(Guid id)
+        {
+            try
+            {
+                var user = await Service.GetUserById(id);
+                return user;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+
+        [HttpDelete]
+        [Route("/user/{id}")]
+        public async Task<HttpResponseMessage> DeleteUser(Guid id)
+        {
+            try
+            {
+                await Service.DeleteUser(id);
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+        }
+
+        [HttpPut]
+        [Route("/user/{id}")]
+        public async Task<HttpResponseMessage> UpdateUser(Guid id, [FromBody] UserModel resource)
+        {
+            try
+            {
+                await Service.UpdateUser(resource, id);
+                return new HttpResponseMessage(HttpStatusCode.OK);
             }
             catch (Exception ex)
             {

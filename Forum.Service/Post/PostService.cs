@@ -47,9 +47,9 @@ namespace Forum.Service.Post
             return posts;
         }
 
-        public async Task UpdatePost(IPostModel post)
+        public async Task UpdatePost(IPostModel post, Guid id)
         {
-            await unitOfWork.PostRepository.Update(post);
+            await unitOfWork.PostRepository.Update(post, id);
             unitOfWork.SaveChanges();
         }
 
@@ -77,9 +77,9 @@ namespace Forum.Service.Post
             return posts;
         }
 
-        public async Task UpdateComment(ICommentModel comment)
+        public async Task UpdateComment(ICommentModel comment, Guid id)
         {
-            await unitOfWork.CommentRepository.Update(comment);
+            await unitOfWork.CommentRepository.Update(comment, id);
             unitOfWork.SaveChanges();
         }
 

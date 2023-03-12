@@ -27,19 +27,42 @@ namespace Forum.Repository.User
             await Task.FromResult(userEntity);
         }
 
-        public Task Update(IUserModel userModel)
+        public async Task Update(IUserModel userModel, Guid id)
         {
-            return default;
+            UserEntity updatedUserEntity = mapper.Map<UserEntity>(userModel);
+            var query = dbContext.Set<UserEntity>();
+            var entity = query.AsQueryable().Where(e => e.Id == id).SingleOrDefault();
+            if (entity != null)
+            {
+                entity.Username = updatedUserEntity.Username;
+                entity.LastName = updatedUserEntity.LastName;
+                entity.FirstName = updatedUserEntity.FirstName;
+                entity.Email = updatedUserEntity.Email;
+                entity.Password = updatedUserEntity.Password;
+                entity.RoleId = updatedUserEntity.RoleId;
+                query.Update(entity);
+            }
+            await Task.FromResult(entity);
         }
 
-        public Task Delete(Guid id)
+        public async Task Delete(Guid id)
         {
-            return default;
+            var query = dbContext.Set<UserEntity>();
+            var entity = query.AsQueryable().SingleOrDefault(e => e.Id == id);
+            if (entity != null)
+            {
+                query.Remove(entity);
+            }
+            await Task.FromResult(entity);
         }
 
-        public Task<IUserModel> GetById(Guid id)
+        public async Task<IUserModel> GetById(Guid id)
         {
-            return default;
+            var query = dbContext.Set<UserEntity>().AsQueryable();
+            var entity = query.Where(x => x.Id == id).SingleOrDefault();
+            await Task.FromResult(entity);
+            var user = mapper.Map<UserModel>(entity);
+            return user;
         }
 
         public async Task<IEnumerable<IUserModel>> GetEntities(IFilter<UserEntity>? filter, IPaging paging)

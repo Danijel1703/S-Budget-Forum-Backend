@@ -48,7 +48,7 @@ namespace Forum.Repository.Reaction
             return comments;
         }
 
-        public async Task Update(IReactionModel reaction)
+        public async Task Update(IReactionModel reaction, Guid id)
         {
             await Task.FromResult(1);
         }

@@ -87,6 +87,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
+builder.Services.Configure<IISOptions>(options =>
+{
+});
 builder.Host.ConfigureAppConfiguration(config =>
 {
     config.AddJsonFile("appsettings.json");
@@ -107,7 +110,7 @@ app.UseCors(
         .AllowAnyMethod()
         .AllowAnyHeader()
 );
-
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();

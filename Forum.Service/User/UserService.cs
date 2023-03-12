@@ -18,7 +18,7 @@ namespace Forum.Service.User
 {
     public class UserService : IUserService
     {
-        private IUnitOfWork unitOfWork { get; set; }
+        private IUnitOfWork UnitOfWork { get; set; }
         private IUserRepository Repository { get; set; }
         private IRoleRepository RoleRepository { get; set; }
         private IFilterFacade FilterFacade { get; set; }
@@ -26,7 +26,7 @@ namespace Forum.Service.User
 
         public UserService(IUnitOfWork _unitOfWork, IUserRepository userRepository, IFilterFacade filterFacade, IConfiguration config, IRoleRepository roleRepository)
         {
-            unitOfWork = _unitOfWork;
+            UnitOfWork = _unitOfWork;
             Repository = userRepository;
             FilterFacade = filterFacade;
             configuration = config;
@@ -40,8 +40,8 @@ namespace Forum.Service.User
             userModel.DateUpdated = DateTime.UtcNow;
             var userRoleId = (await GetRoles()).Single(r => r.Abrv == "user").Id;
             userModel.RoleId = userRoleId;
-            await unitOfWork.UserRepository.Create(userModel);
-            unitOfWork.SaveChanges();
+            await UnitOfWork.UserRepository.Create(userModel);
+            UnitOfWork.SaveChanges();
         }
 
         public async Task<string> LogInUser(ILoginModel userCredentials)
@@ -97,6 +97,24 @@ namespace Forum.Service.User
         {
             var result = await Repository.GetUsersPaged(null, paging);
             return result;
+        }
+
+        public async Task<IUserModel> GetUserById(Guid id)
+        {
+            var result = await Repository.GetById(id);
+            return result;
+        }
+
+        public async Task DeleteUser(Guid id)
+        {
+            await UnitOfWork.UserRepository.Delete(id);
+            UnitOfWork.SaveChanges();
+        }
+
+        public async Task UpdateUser(IUserModel userModel, Guid id)
+        {
+            await UnitOfWork.UserRepository.Update(userModel, id);
+            UnitOfWork.SaveChanges();
         }
     }
 }

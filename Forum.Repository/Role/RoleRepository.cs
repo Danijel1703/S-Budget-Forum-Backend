@@ -44,7 +44,7 @@ namespace Forum.Repository.Role
             return default;
         }
 
-        public Task Update(IRoleModel role)
+        public Task Update(IRoleModel role, Guid id)
         {
             return default;
         }

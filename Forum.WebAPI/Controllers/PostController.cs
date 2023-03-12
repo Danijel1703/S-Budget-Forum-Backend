@@ -48,15 +48,15 @@ namespace Forum.WebAPI.Controllers
         }
 
         [HttpPut]
-        [Route("/post/update")]
+        [Route("/post/{id}/update")]
         [Authorize]
-        public async Task UpdatePost(PostModel postModel)
+        public async Task UpdatePost(PostModel postModel, Guid id)
         {
-            await Service.UpdatePost(postModel);
+            await Service.UpdatePost(postModel, id);
         }
 
         [HttpDelete]
-        [Route("/post/delete")]
+        [Route("/post/{id}/delete")]
         [Authorize]
         public async Task DeletePost(Guid id)
         {
@@ -86,11 +86,11 @@ namespace Forum.WebAPI.Controllers
         }
 
         [HttpPut]
-        [Route("/post/comment/update")]
+        [Route("/post/comment/{id}/update")]
         [Authorize]
-        public async Task UpdateComment(CommentModel commentModel)
+        public async Task UpdateComment(Guid id, CommentModel commentModel)
         {
-            await Service.UpdateComment(commentModel);
+            await Service.UpdateComment(commentModel, id);
         }
 
         [HttpDelete]

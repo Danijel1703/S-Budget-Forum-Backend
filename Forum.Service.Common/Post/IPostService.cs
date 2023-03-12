@@ -11,7 +11,7 @@ namespace Forum.Service.Common.Post
 
         public Task<IEnumerable<IPostModel>> GetPosts(IPostFilterModel filter, IPaging paging);
 
-        public Task UpdatePost(IPostModel post);
+        public Task UpdatePost(IPostModel post, Guid id);
 
         public Task DeletePost(Guid id);
 
@@ -21,7 +21,7 @@ namespace Forum.Service.Common.Post
 
         public Task<IEnumerable<ICommentModel>> GetComments(ICommentFilterModel filter, IPaging paging);
 
-        public Task UpdateComment(ICommentModel comment);
+        public Task UpdateComment(ICommentModel comment, Guid id);
 
         public Task DeleteComment(Guid id);
 

@@ -42,9 +42,9 @@ namespace Forum.Repository.Post
             return postsList;
         }
 
-        public async Task Update(IPostModel post)
+        public async Task Update(IPostModel post, Guid id)
         {
-            var existingPost = dbContext.Set<PostEntity>().SingleOrDefault(e => e.Id == post.Id);
+            var existingPost = dbContext.Set<PostEntity>().SingleOrDefault(e => e.Id == id);
             if (existingPost != null)
             {
                 existingPost.Title = post.Title;

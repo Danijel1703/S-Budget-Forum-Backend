@@ -42,9 +42,9 @@ namespace Forum.Repository.Comment
             return postsList;
         }
 
-        public async Task Update(ICommentModel post)
+        public async Task Update(ICommentModel post, Guid id)
         {
-            var existingPost = dbContext.Set<CommentEntity>().SingleOrDefault(e => e.Id == post.Id);
+            var existingPost = dbContext.Set<CommentEntity>().SingleOrDefault(e => e.Id == id);
             if (existingPost != null)
             {
                 existingPost.Content = post.Content;
