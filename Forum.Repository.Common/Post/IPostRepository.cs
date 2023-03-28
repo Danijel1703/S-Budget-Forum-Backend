@@ -3,7 +3,7 @@ using Forum.Model.Common.Post;
 
 namespace Forum.Repository.Common.Post
 {
-    public interface IPostRepository : IGenericRepository<IPostModel, PostEntity>
+    public interface IPostRepository : IGenericRepository<IPostModel, IPostFilterModel, PostEntity>
     {
     }
 }

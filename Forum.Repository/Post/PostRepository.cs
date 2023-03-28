@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Forum.DAL.Entity;
+using Forum.Model;
 using Forum.Model.Common;
 using Forum.Model.Common.Post;
 using Forum.Model.Post;
 using Forum.Repository.Common.Post;
+using System.Linq.Expressions;
 
 namespace Forum.Repository.Post
 {
@@ -25,15 +27,18 @@ namespace Forum.Repository.Post
             await Task.FromResult(postEntity);
         }
 
-        public async Task<IEnumerable<IPostModel>> GetEntities(IFilter<PostEntity> filter, IPaging paging)
+        public async Task<IEnumerable<IPostModel>> FindEntities(IPostFilterModel? filter, IPaging paging)
         {
             var query = dbContext.Set<PostEntity>().AsQueryable();
-            var expresions = filter.Expressions;
-            if (expresions.Any())
+            if (filter != null)
             {
-                foreach (var expression in expresions)
+                var expresions = BuildFilter(filter);
+                if (expresions != null)
                 {
-                    query = query.Where(expression);
+                    foreach (var expression in expresions)
+                    {
+                        query = query.Where(expression);
+                    }
                 }
             }
             var entites = query.OrderBy(e => e.DateCreated).Skip(paging.Skip).Take(paging.RecordsPerPage).ToList();
@@ -70,6 +75,29 @@ namespace Forum.Repository.Post
             await Task.FromResult(entity);
             var post = mapper.Map<PostModel>(entity);
             return post;
+        }
+
+        public int TotalEntitiesCount()
+        {
+            return dbContext.Set<PostEntity>().Count();
+        }
+
+        public Expression<Func<PostEntity, bool>>[] BuildFilter(IPostFilterModel postFilter)
+        {
+            var expressions = new Expression<Func<PostEntity, bool>>[typeof(IPostFilterModel).GetProperties().Length];
+            if (postFilter != null)
+            {
+                if (postFilter.UserId != null)
+                {
+                    expressions[0] = e => e.UserId == postFilter.UserId;
+                }
+            }
+            var filter = expressions.Where(e => e != null);
+            if (filter.Any())
+            {
+                return filter.ToArray();
+            }
+            return null;
         }
     }
 }

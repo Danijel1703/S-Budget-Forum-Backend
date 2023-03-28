@@ -1,8 +1,9 @@
 using Forum.Model.Common;
+using System.Linq.Expressions;
 
 namespace Forum.Repository.Common
 {
-    public interface IGenericRepository<TResource, TEntity>
+    public interface IGenericRepository<TResource, TResourceFilter, TEntity>
     {
         public Task Create(TResource resource);
 
@@ -10,8 +11,12 @@ namespace Forum.Repository.Common
 
         public Task Delete(Guid id);
 
-        public Task<IEnumerable<TResource>> GetEntities(IFilter<TEntity> filter, IPaging paging);
+        public Task<IEnumerable<TResource>> FindEntities(TResourceFilter? filter, IPaging paging);
 
         public Task<TResource> GetById(Guid id);
+
+        public int TotalEntitiesCount();
+
+        public Expression<Func<TEntity, bool>>[] BuildFilter(TResourceFilter? filter);
     }
 }

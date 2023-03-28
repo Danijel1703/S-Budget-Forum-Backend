@@ -13,9 +13,7 @@ namespace Forum.Service.Common.User
 
         public Task<IUserModel> GetUserById(Guid id);
 
-        public Task<IEnumerable<IRoleModel>> GetRoles();
-
-        public Task<IPagedResult<IUserModel>> GetUsersPaged(IPaging paging);
+        public Task<IPagedResult<IUserModel>> FindUsers(IPaging paging);
 
         public Task DeleteUser(Guid id);
 

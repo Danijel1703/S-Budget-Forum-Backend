@@ -6,7 +6,11 @@ using Forum.Model.Common.Post;
 using Forum.Model.Common.Reaction;
 using Forum.Model.Post;
 using Forum.Model.Reaction;
+using Forum.Service.Common.Comment;
 using Forum.Service.Common.Post;
+using Forum.Service.Common.Reaction;
+using Forum.Service.Common.Role;
+using Forum.Service.Reaction;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,11 +21,15 @@ namespace Forum.WebAPI.Controllers
     public class PostController : ControllerBase
     {
         public IPostService Service { get; set; }
+        public ICommentService CommentService { get; set; }
+        public IReactionService ReactionService { get; set; }
         public IMapper mapper { get; set; }
 
-        public PostController(IPostService service, IMapper _mapper)
+        public PostController(IPostService service, ICommentService commentService, IReactionService reactionService, IMapper _mapper)
         {
             Service = service;
+            CommentService = commentService;
+            ReactionService = reactionService;
             mapper = _mapper;
         }
 
@@ -40,11 +48,11 @@ namespace Forum.WebAPI.Controllers
             return await Service.GetPostById(id);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("/post")]
-        public async Task<IEnumerable<IPostModel>> GetPosts([FromQuery] PostFilterModel filter, Paging paging)
+        public async Task<IEnumerable<IPostModel>> FindPosts([FromBody] PostParams postParams)
         {
-            return await Service.GetPosts(filter, paging);
+            return await Service.FindPosts(postParams.Filter, postParams.Paging);
         }
 
         [HttpPut]
@@ -68,21 +76,21 @@ namespace Forum.WebAPI.Controllers
         [Authorize]
         public async Task CreateComment(CommentModel comment)
         {
-            await Service.CreateComment(comment);
+            await CommentService.CreateComment(comment);
         }
 
         [HttpGet]
         [Route("/post/comment/{id}")]
         public async Task<ICommentModel> GetCommeentById(Guid id)
         {
-            return await Service.GetCommentById(id);
+            return await CommentService.GetCommentById(id);
         }
 
         [HttpGet]
         [Route("/post/comment")]
         public async Task<IEnumerable<ICommentModel>> GetComments([FromQuery] CommentFilterModel filter, Paging paging)
         {
-            return await Service.GetComments(filter, paging);
+            return await CommentService.GetComments(filter, paging);
         }
 
         [HttpPut]
@@ -90,7 +98,7 @@ namespace Forum.WebAPI.Controllers
         [Authorize]
         public async Task UpdateComment(Guid id, CommentModel commentModel)
         {
-            await Service.UpdateComment(commentModel, id);
+            await CommentService.UpdateComment(commentModel, id);
         }
 
         [HttpDelete]
@@ -98,7 +106,7 @@ namespace Forum.WebAPI.Controllers
         [Authorize]
         public async Task DeleteComment(Guid id)
         {
-            await Service.DeleteComment(id);
+            await CommentService.DeleteComment(id);
         }
 
         [HttpPost]
@@ -106,14 +114,14 @@ namespace Forum.WebAPI.Controllers
         [Authorize]
         public async Task CreateReaction(ReactionModel reaction)
         {
-            await Service.CreateReaction(reaction);
+            await ReactionService.CreateReaction(reaction);
         }
 
         [HttpGet]
         [Route("/post/reaction")]
         public async Task<IEnumerable<IReactionModel>> GetReactions([FromQuery] ReactionFilterModel filter, Paging paging)
         {
-            return await Service.GetReactions(filter, paging);
+            return await ReactionService.GetReactions(filter, paging);
         }
 
         [HttpDelete]
@@ -121,7 +129,13 @@ namespace Forum.WebAPI.Controllers
         [Authorize]
         public async Task DeleteReaction(Guid id)
         {
-            await Service.DeleteReaction(id);
+            await ReactionService.DeleteReaction(id);
+        }
+
+        public class PostParams
+        {
+            public PostFilterModel Filter { get; set; }
+            public Paging Paging { get; set; }
         }
     }
 }

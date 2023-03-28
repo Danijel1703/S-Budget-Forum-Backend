@@ -27,4 +27,8 @@
     <ProjectReference Include="..\Forum.Service.Common\Forum.Service.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
 </Project>

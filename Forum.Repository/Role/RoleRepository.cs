@@ -1,16 +1,10 @@
 ﻿using AutoMapper;
 using Forum.DAL.Entity;
-using Forum.Model;
 using Forum.Model.Common;
 using Forum.Model.Common.Role;
-using Forum.Model.Common.User;
 using Forum.Model.RoleModel;
 using Forum.Repository.Common.Role;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace Forum.Repository.Role
 {
@@ -25,7 +19,7 @@ namespace Forum.Repository.Role
             mapper = _mapper;
         }
 
-        public async Task<IEnumerable<IRoleModel>> GetEntities(IFilter<RoleEntity>? filter, IPaging paging)
+        public async Task<IEnumerable<IRoleModel>> FindEntities(IRoleModel? filter, IPaging paging)
         {
             return default;
         }
@@ -37,6 +31,11 @@ namespace Forum.Repository.Role
             await Task.FromResult(entities);
             var roles = mapper.Map<IEnumerable<RoleModel>>(entities);
             return roles;
+        }
+
+        public int TotalEntitiesCount()
+        {
+            return dbContext.Set<RoleEntity>().Count();
         }
 
         public Task Create(IRoleModel role)
@@ -55,6 +54,11 @@ namespace Forum.Repository.Role
         }
 
         public Task<IRoleModel> GetById(Guid id)
+        {
+            return default;
+        }
+
+        public Expression<Func<RoleEntity, bool>>[] BuildFilter(IRoleModel? filter)
         {
             return default;
         }

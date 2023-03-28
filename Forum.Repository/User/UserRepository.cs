@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Forum.DAL.Entity;
-using Forum.Model;
 using Forum.Model.Common;
 using Forum.Model.Common.User;
 using Forum.Model.User;
 using Forum.Repository.Common.User;
 using System.Data.Entity;
+using System.Linq.Expressions;
 
 namespace Forum.Repository.User
 {
@@ -40,6 +40,7 @@ namespace Forum.Repository.User
                 entity.Email = updatedUserEntity.Email;
                 entity.Password = updatedUserEntity.Password;
                 entity.RoleId = updatedUserEntity.RoleId;
+                entity.DateUpdated = DateTime.Now;
                 query.Update(entity);
             }
             await Task.FromResult(entity);
@@ -65,14 +66,18 @@ namespace Forum.Repository.User
             return user;
         }
 
-        public async Task<IEnumerable<IUserModel>> GetEntities(IFilter<UserEntity>? filter, IPaging paging)
+        public async Task<IEnumerable<IUserModel>> FindEntities(IUserFilterModel? filter, IPaging paging)
         {
             var query = dbContext.Set<UserEntity>().AsQueryable();
-            if (filter != null && filter.Expressions.Any())
+            if (filter != null)
             {
-                foreach (var expression in filter.Expressions)
+                var filterExpressions = BuildFilter(filter);
+                if (filterExpressions != null)
                 {
-                    query = query.Where(expression);
+                    foreach (var expression in filterExpressions)
+                    {
+                        query = query.Where(expression);
+                    }
                 }
             }
             var entites = query.OrderBy(e => e.DateCreated).Skip(paging.Skip).Take(paging.RecordsPerPage).ToList();
@@ -81,22 +86,44 @@ namespace Forum.Repository.User
             return usersList;
         }
 
-        public async Task<IPagedResult<IUserModel>> GetUsersPaged(IFilter<UserEntity>? filter, IPaging paging)
+        public int TotalEntitiesCount()
         {
-            var entities = await GetEntities(filter, paging);
-            var totalRecords = dbContext.Set<UserEntity>().Count();
-            IPagedResult<IUserModel> pagedResult = ToPagedList<IUserModel>(entities, paging, totalRecords);
-            return pagedResult;
+            return dbContext.Set<UserEntity>().Count();
         }
 
-        private IPagedResult<TEntityModel> ToPagedList<TEntityModel>(IEnumerable<TEntityModel> entities, IPaging paging, int totalRecords)
+        public Expression<Func<UserEntity, bool>>[] BuildFilter(IUserFilterModel userFilter)
         {
-            IPagedResult<TEntityModel> pagedResult = new PagedResult<TEntityModel>();
-            pagedResult.Item = entities;
-            pagedResult.Page = paging.Page;
-            pagedResult.TotalRecords = totalRecords;
-            pagedResult.RecordsPerPage = paging.RecordsPerPage;
-            return pagedResult;
+            var expressions = new Expression<Func<UserEntity, bool>>[typeof(IUserFilterModel).GetProperties().Length];
+            if (userFilter != null)
+            {
+                if (userFilter.Username != null)
+                {
+                    expressions[0] = u => u.Username == userFilter.Username;
+                }
+                if (userFilter.FirstName != null)
+                {
+                    expressions[1] = u => u.FirstName == userFilter.FirstName;
+                }
+                if (userFilter.LastName != null)
+                {
+                    expressions[2] = u => u.LastName == userFilter.LastName;
+                }
+                if (userFilter.Email != null)
+                {
+                    expressions[3] = u => u.Email == userFilter.Email;
+                }
+                if (userFilter.Id != null)
+                {
+                    expressions[4] = u => u.Id == userFilter.Id;
+                }
+            }
+
+            var filter = expressions.Where(e => e != null);
+            if (filter.Any())
+            {
+                return filter.ToArray();
+            }
+            return null;
         }
     }
 }

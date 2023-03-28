@@ -6,12 +6,14 @@ using Forum.Model.User;
 using Forum.Repository.Common;
 using Forum.Repository.Common.Role;
 using Forum.Repository.Common.User;
+using Forum.Service.Common.Role;
 using Forum.Service.Common.User;
 using Forum.Service.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Forum.Service.User
@@ -20,17 +22,15 @@ namespace Forum.Service.User
     {
         private IUnitOfWork UnitOfWork { get; set; }
         private IUserRepository Repository { get; set; }
-        private IRoleRepository RoleRepository { get; set; }
-        private IFilterFacade FilterFacade { get; set; }
+        private IRoleService RoleService { get; set; }
         private readonly IConfiguration configuration;
 
-        public UserService(IUnitOfWork _unitOfWork, IUserRepository userRepository, IFilterFacade filterFacade, IConfiguration config, IRoleRepository roleRepository)
+        public UserService(IUnitOfWork _unitOfWork, IUserRepository userRepository, IConfiguration config, IRoleService roleService)
         {
             UnitOfWork = _unitOfWork;
             Repository = userRepository;
-            FilterFacade = filterFacade;
             configuration = config;
-            RoleRepository = roleRepository;
+            RoleService = roleService;
         }
 
         public async Task RegisterUser(IUserModel userModel)
@@ -38,7 +38,7 @@ namespace Forum.Service.User
             userModel.Password = BCrypt.Net.BCrypt.HashPassword(userModel.Password);
             userModel.DateCreated = DateTime.UtcNow;
             userModel.DateUpdated = DateTime.UtcNow;
-            var userRoleId = (await GetRoles()).Single(r => r.Abrv == "user").Id;
+            var userRoleId = (await RoleService.GetRoles()).Single(r => r.Abrv == "user").Id;
             userModel.RoleId = userRoleId;
             await UnitOfWork.UserRepository.Create(userModel);
             UnitOfWork.SaveChanges();
@@ -46,12 +46,10 @@ namespace Forum.Service.User
 
         public async Task<string> LogInUser(ILoginModel userCredentials)
         {
-            var userFilter = new UserFilterModel();
+            var filter = new UserFilterModel();
             var paging = new Paging();
-            userFilter.Email = userCredentials.Email;
-
-            var filter = FilterFacade.BuildUserFilter(userFilter);
-            var users = await Repository.GetEntities(filter, paging);
+            filter.Email = userCredentials.Email;
+            var users = await Repository.FindEntities(filter, paging);
             if (users.Any())
             {
                 var user = users.First();
@@ -70,8 +68,9 @@ namespace Forum.Service.User
 
         private string GenerateToken(IUserModel userModel)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var secretKey = Environment.GetEnvironmentVariable("SECRET");
+            var issuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            var credentials = new SigningCredentials(issuerSigningKey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, userModel.Id.ToString()),
@@ -84,19 +83,16 @@ namespace Forum.Service.User
                 expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: credentials
             );
+            var tokenHandler = new JwtSecurityTokenHandler();
+            tokenHandler.WriteToken(token);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public async Task<IEnumerable<IRoleModel>> GetRoles()
+        public async Task<IPagedResult<IUserModel>> FindUsers(IPaging paging)
         {
-            var roles = await RoleRepository.GetAllEntities();
-            return roles;
-        }
-
-        public async Task<IPagedResult<IUserModel>> GetUsersPaged(IPaging paging)
-        {
-            var result = await Repository.GetUsersPaged(null, paging);
-            return result;
+            var result = await Repository.FindEntities(null, paging);
+            var pagedResult = PagedListHelper<IUserModel>.ToPagedList(result, paging, Repository.TotalEntitiesCount());
+            return pagedResult;
         }
 
         public async Task<IUserModel> GetUserById(Guid id)

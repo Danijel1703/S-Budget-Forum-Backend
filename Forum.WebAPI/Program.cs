@@ -25,10 +25,15 @@ using Forum.Repository.Post;
 using Forum.Repository.Reaction;
 using Forum.Repository.Role;
 using Forum.Repository.User;
+using Forum.Service.Common.Comment;
 using Forum.Service.Common.Post;
+using Forum.Service.Common.Reaction;
+using Forum.Service.Common.Role;
 using Forum.Service.Common.User;
 using Forum.Service.Helpers;
 using Forum.Service.Post;
+using Forum.Service.Reaction;
+using Forum.Service.Role;
 using Forum.Service.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -53,17 +58,19 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 
     builder.RegisterType<CommentModel>().As<ICommentModel>();
     builder.RegisterType<CommentRepository>().As<ICommentRepository>();
+    builder.RegisterType<CommentService>().As<ICommentService>();
 
     builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
-    builder.RegisterType<FilterFacade>().As<IFilterFacade>();
     builder.RegisterType<Paging>().As<IPaging>();
     builder.RegisterGeneric(typeof(PagedResult<>)).As(typeof(IPagedResult<>));
 
     builder.RegisterType<RoleModel>().As<IRoleModel>();
     builder.RegisterType<RoleRepository>().As<IRoleRepository>();
+    builder.RegisterType<RoleService>().As<IRoleService>();
 
     builder.RegisterType<ReactionModel>().As<IReactionModel>();
     builder.RegisterType<ReactionRepository>().As<IReactionRepository>();
+    builder.RegisterType<ReactionService>().As<IReactionService>();
 
     builder.RegisterType<ForumContext>();
 });
@@ -77,6 +84,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperProfiles)));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
+    Environment.SetEnvironmentVariable("SECRET", "SBudgetForumSecretKey");
+    var secretKey = Environment.GetEnvironmentVariable("SECRET");
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -84,7 +93,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
     };
 });
 builder.Services.Configure<IISOptions>(options =>

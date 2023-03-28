@@ -5,8 +5,7 @@ using Forum.Model.Common.User;
 
 namespace Forum.Repository.Common.User
 {
-    public interface IUserRepository : IGenericRepository<IUserModel, UserEntity>
+    public interface IUserRepository : IGenericRepository<IUserModel, IUserFilterModel, UserEntity>
     {
-        Task<IPagedResult<IUserModel>> GetUsersPaged(IFilter<UserEntity>? filter, IPaging paging);
     }
 }

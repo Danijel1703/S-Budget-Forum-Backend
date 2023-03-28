@@ -4,6 +4,7 @@ using Forum.Model.Common;
 using Forum.Model.Common.Role;
 using Forum.Model.Common.User;
 using Forum.Model.User;
+using Forum.Service.Common.Role;
 using Forum.Service.Common.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +17,14 @@ namespace Forum.WebAPI.Controllers
     public class UserController : ControllerBase
     {
         public IUserService Service { get; set; }
+        public IRoleService RoleService { get; set; }
 
         public IMapper mapper { get; set; }
 
-        public UserController(IUserService service, IMapper _mapper)
+        public UserController(IUserService service, IMapper _mapper, IRoleService roleService)
         {
             Service = service;
+            RoleService = roleService;
             mapper = _mapper;
         }
 
@@ -41,13 +44,13 @@ namespace Forum.WebAPI.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("/user")]
-        public async Task<IPagedResult<IUserModel>> GetUsers([FromQuery] Paging paging)
+        public async Task<IPagedResult<IUserModel>> FindUsers([FromBody] Paging paging)
         {
             try
             {
-                var result = await Service.GetUsersPaged(paging);
+                var result = await Service.FindUsers(paging);
                 return result;
             }
             catch (Exception ex)
@@ -72,12 +75,13 @@ namespace Forum.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Super Admin")]
         [Route("/user/roles")]
         public async Task<IEnumerable<IRoleModel>> GetAllRoles()
         {
             try
             {
-                return await Service.GetRoles();
+                return await RoleService.GetRoles();
             }
             catch (Exception ex)
             {

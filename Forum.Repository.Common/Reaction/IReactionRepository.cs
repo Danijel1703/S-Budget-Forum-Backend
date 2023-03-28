@@ -3,7 +3,7 @@ using Forum.Model.Common.Reaction;
 
 namespace Forum.Repository.Common.Reaction
 {
-    public interface IReactionRepository : IGenericRepository<IReactionModel, ReactionEntity>
+    public interface IReactionRepository : IGenericRepository<IReactionModel, IReactionFilterModel, ReactionEntity>
     {
     }
 }

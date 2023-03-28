@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Forum.DAL.Entity;
+using Forum.Model;
 using Forum.Model.Common;
 using Forum.Model.Common.Reaction;
 using Forum.Model.Reaction;
 using Forum.Repository.Common.Reaction;
+using System.Linq.Expressions;
+using System.Security.Policy;
 
 namespace Forum.Repository.Reaction
 {
@@ -32,12 +35,13 @@ namespace Forum.Repository.Reaction
             await Task.FromResult(entity);
         }
 
-        public async Task<IEnumerable<IReactionModel>> GetEntities(IFilter<ReactionEntity> filterModel, IPaging paging)
+        public async Task<IEnumerable<IReactionModel>> FindEntities(IReactionFilterModel? filter, IPaging paging)
         {
             var query = dbContext.Set<ReactionEntity>().AsQueryable();
-            if (filterModel.Expressions.Any())
+            if (filter != null)
             {
-                foreach (var expression in filterModel.Expressions)
+                var expressions = BuildFilter(filter);
+                foreach (var expression in expressions)
                 {
                     query = query.Where(expression);
                 }
@@ -56,6 +60,33 @@ namespace Forum.Repository.Reaction
         public async Task<IReactionModel> GetById(Guid id)
         {
             await Task.FromResult(1);
+            return default;
+        }
+
+        public int TotalEntitiesCount()
+        {
+            return dbContext.Set<ReactionEntity>().Count();
+        }
+
+        public Expression<Func<ReactionEntity, bool>>[] BuildFilter(IReactionFilterModel reactionFilter)
+        {
+            var expressions = new Expression<Func<ReactionEntity, bool>>[typeof(IReactionFilterModel).GetProperties().Length];
+            if (reactionFilter != null)
+            {
+                if (reactionFilter.CommentId != null)
+                {
+                    expressions[0] = e => e.CommentId == reactionFilter.CommentId;
+                }
+                if (reactionFilter.PostId != null)
+                {
+                    expressions[1] = e => e.PostId == reactionFilter.PostId;
+                }
+            }
+            var filter = expressions.Where(e => e != null);
+            if (filter.Any())
+            {
+                return filter.ToArray();
+            }
             return default;
         }
     }
