@@ -1,4 +1,5 @@
-﻿using Forum.Model.Common.User;
+﻿using Forum.Model.Common.Role;
+using Forum.Model.Common.User;
 
 namespace Forum.Model.User
 {
@@ -13,5 +14,6 @@ namespace Forum.Model.User
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         public Guid RoleId { get; set; }
+        public IRoleModel Role { get; set; }
     }
 }
